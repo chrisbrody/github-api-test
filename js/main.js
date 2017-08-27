@@ -6,6 +6,47 @@ var results = document.getElementById("results");
 var pagetracker = 1;
 var followercount;
 
+function createfollowers(followerdata) {
+  for (var i = 0; i < followerdata.length; i++) {
+    // list of the user's followers
+
+    // create elements
+    var newDiv2   = document.createElement('div');
+    var newA      = document.createElement('a');
+    var newImg    = document.createElement('img');
+    var newSpan   = document.createElement('span');
+
+    // add attrbiutes to a tag
+    newA.href = followerdata[i].html_url;
+    newA.target = "_blank";
+
+    // add class to div
+    newDiv2.className = "follower";
+
+    // add image to tag
+    newImg.src = followerdata[i].avatar_url;
+    newImg.alt = "Avatar Picture";
+
+    // add class to img
+    newImg.className = "img-sm";
+
+    // add text to tag
+    newSpan.innerText = followerdata[i].login;
+
+    // add tags to new a tag
+    newA.appendChild(newImg);
+    newA.appendChild(newSpan);
+
+    // add tags to new div
+    newDiv2.appendChild(newA);
+
+    // add the new div element to results
+    results.appendChild(newDiv2);
+  }
+}
+
+
+
 function githubSearch(){
 
 
@@ -56,42 +97,8 @@ function githubSearch(){
     			// display data being passed through
     			console.log(followerdata);
 
-          for (var i = 0; i < followerdata.length; i++) {
-            // list of the user's followers
+          createfollowers(followerdata)
 
-            // create elements
-         		var newDiv2   = document.createElement('div');
-            var newA      = document.createElement('a');
-            var newImg    = document.createElement('img');
-            var newSpan   = document.createElement('span');
-
-            // add attrbiutes to a tag
-            newA.href = followerdata[i].html_url;
-            newA.target = "_blank";
-
-            // add class to div
-            newDiv2.className = "follower";
-
-            // add image to tag
-            newImg.src = followerdata[i].avatar_url;
-            newImg.alt = "Avatar Picture";
-
-            // add class to img
-            newImg.className = "img-sm";
-
-            // add text to tag
-            newSpan.innerText = followerdata[i].login;
-
-            // add tags to new a tag
-         		newA.appendChild(newImg);
-         		newA.appendChild(newSpan);
-
-            // add tags to new div
-         		newDiv2.appendChild(newA);
-
-         		// add the new div element to results
-         		results.appendChild(newDiv2);
-          }
         }
     	});
 
@@ -120,7 +127,8 @@ function moreFollowers() {
 	console.log(followercount, pagetracker)
 
 	// this true statement has to be updated to compare followercount and pagetracker so it only displays if more followers are available to display --- calculation tbd
-	if(true) {
+  var x = 5
+	if(5 === 5) {
 		// increase page tracker to get next page number
 		pagetracker++;
 
@@ -135,7 +143,48 @@ function moreFollowers() {
 				// display data being passed through
 				console.log(morefollowerdata);
 
+        // clear any previous data if it exists
+        if(results.innerHTML != "") {
+        	results.innerHTML = "";
+        }
+
 				// display new data here
+        for (var i = 0; i < morefollowerdata.length; i++) {
+          // list of the user's followers
+
+          // create elements
+          var newDiv2   = document.createElement('div');
+          var newA      = document.createElement('a');
+          var newImg    = document.createElement('img');
+          var newSpan   = document.createElement('span');
+
+          // add attrbiutes to a tag
+          newA.href = morefollowerdata[i].html_url;
+          newA.target = "_blank";
+
+          // add class to div
+          newDiv2.className = "follower";
+
+          // add image to tag
+          newImg.src = morefollowerdata[i].avatar_url;
+          newImg.alt = "Avatar Picture";
+
+          // add class to img
+          newImg.className = "img-sm";
+
+          // add text to tag
+          newSpan.innerText = morefollowerdata[i].login;
+
+          // add tags to new a tag
+          newA.appendChild(newImg);
+          newA.appendChild(newSpan);
+
+          // add tags to new div
+          newDiv2.appendChild(newA);
+
+          // add the new div element to results
+          results.appendChild(newDiv2);
+        }
 
 
 			}
