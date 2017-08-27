@@ -1,55 +1,62 @@
 // store input element where Github username is added
-var inputEl = document.getElementById("github-username");
+var inputEl = getEl("github-username");
 // store element to display results
-var results = document.getElementById("results");
+var results = getEl("results");
+// store button element for search function
+var searchBtn = getEl('github-search');
+// store button to display next followers
+var nextSearchBtn = getEl('github-next-search');
 // store current page
 var pagetracker = 1;
 var followercount;
 
+// function to create elements with less typing
+function newEl(el) {
+  return document.createElement(el)
+}
+// function to create elements with less typing
+function getEl(el) {
+  return document.getElementById(el)
+}
+
 function createfollowers(followerdata) {
+  // loop through the list of the user's followers
   for (var i = 0; i < followerdata.length; i++) {
-    // list of the user's followers
-
     // create elements
-    var newDiv2   = document.createElement('div');
-    var newA      = document.createElement('a');
-    var newImg    = document.createElement('img');
-    var newSpan   = document.createElement('span');
+    var newDiv2 = newEl('div');
+    var newA    = newEl('a');
+    var newImg  = newEl('img');
+    var newSpan = newEl('span');
 
-    // add attrbiutes to a tag
+    // add attrbiutes to anchor tag
     newA.href = followerdata[i].html_url;
     newA.target = "_blank";
 
-    // add class to div
+    // add attrbiutes to div tag
     newDiv2.className = "follower";
 
-    // add image to tag
+    // add attrbiutes to image tag
     newImg.src = followerdata[i].avatar_url;
     newImg.alt = "Avatar Picture";
-
-    // add class to img
     newImg.className = "img-sm";
 
-    // add text to tag
+    // add text to span tag
     newSpan.innerText = followerdata[i].login;
 
-    // add tags to new a tag
+    // add tags to new anchor tag
     newA.appendChild(newImg);
     newA.appendChild(newSpan);
 
-    // add tags to new div
+    // add tags to new div tag
     newDiv2.appendChild(newA);
 
-    // add the new div element to results
+    // add the new div tag to results displays in HTML
     results.appendChild(newDiv2);
-  }
-}
+  };
+};
 
-
-
+// thie fucntion is triggered when the search button is clicked
 function githubSearch(){
-
-
   // clear any previous data if it exists
   if(results.innerHTML != "") {
   	results.innerHTML = "";
@@ -57,22 +64,20 @@ function githubSearch(){
 
 	// make a data request
 	$.ajax({
-		// url for database
     url: "https://api.github.com/users/" + inputEl.value,
     dataType: "json",
     type: 'GET',
     // on success, do this
     success: function(userdata) {
 			// display data being passed through
-			console.log(userdata);
-      // display the user's GitHub handle
+			// console.log(userdata);
 
       // create elements
-   		var newDiv    = document.createElement('div');
-   		var newH1     = document.createElement('h1');
-   		var newH2     = document.createElement('h2');
+   		var newDiv = newEl('div');
+   		var newH1  = newEl('h1');
+   		var newH2  = newEl('h2');
 
-      // add classes to elements
+      // add attributes to div tag
    		newDiv.className = 'user';
 
    		// add text to tags
@@ -83,7 +88,7 @@ function githubSearch(){
    		newDiv.appendChild(newH1);
    		newDiv.appendChild(newH2);
 
-   		// add the new div element to results
+   		// add the new div tag to results displays in HTML
    		results.appendChild(newDiv);
 
       // request follower data
@@ -107,7 +112,7 @@ function githubSearch(){
 			// check follower count to display next
 			if (followercount > 30) {
 				nextSearchBtn.style.display = "block"
-			}
+			};
 
 			// make followercount a global variable
 			return followercount;
@@ -115,79 +120,74 @@ function githubSearch(){
 	});
 };
 
-// add event to element with id="github-search"
-var searchBtn = document.getElementById('github-search');
-searchBtn.addEventListener('click', githubSearch, false);
-
-// button for next followers
-var nextSearchBtn = document.getElementById('github-next-search');
-
 function moreFollowers() {
-	// check followercount and pagetracker values
-	console.log(followercount, pagetracker)
+	// checks the total followercount and pagetracker values are accessable
+	// console.log(followercount, pagetracker);
 
-	// this true statement has to be updated to compare followercount and pagetracker so it only displays if more followers are available to display --- calculation tbd
-  var x = 5
-	if(5 === 5) {
+	// this calculation pagetracker < Math.ceil(followercount / 30 - will determine if there are more pages that can be displayed or not
+  // console.log(pagetracker, Math.ceil(followercount / 30));
+
+  // check if more followers can be displayed
+	if(pagetracker < Math.ceil(followercount / 30)) {
 		// increase page tracker to get next page number
 		pagetracker++;
 
-		// request follower data
+		// request more follower data, pagetracker is used to determine the page to search for
 		$.ajax({
-			// url for database
 			url: "https://api.github.com/users/" + inputEl.value + "/followers" + '?page=' + pagetracker,
 			dataType: "json",
 			type: 'GET',
 			// on success, do this
 			success: function(morefollowerdata) {
 				// display data being passed through
-				console.log(morefollowerdata);
+				// console.log(morefollowerdata);
 
         // clear any previous data if it exists
         if(results.innerHTML != "") {
         	results.innerHTML = "";
         }
 
-				// display new data here
+				// loop through new list of user's followers
         for (var i = 0; i < morefollowerdata.length; i++) {
-          // list of the user's followers
-
           // create elements
-          var newDiv2   = document.createElement('div');
-          var newA      = document.createElement('a');
-          var newImg    = document.createElement('img');
-          var newSpan   = document.createElement('span');
+          var newDiv2   = newEl('div');
+          var newA      = newEl('a');
+          var newImg    = newEl('img');
+          var newSpan   = newEl('span');
 
-          // add attrbiutes to a tag
+          // add attrbiutes to anchor tag
           newA.href = morefollowerdata[i].html_url;
           newA.target = "_blank";
 
-          // add class to div
+          // add attrbiutes to div tag
           newDiv2.className = "follower";
 
-          // add image to tag
+          // add attrbiutes to image tag
           newImg.src = morefollowerdata[i].avatar_url;
           newImg.alt = "Avatar Picture";
-
-          // add class to img
           newImg.className = "img-sm";
 
-          // add text to tag
+          // add text to span tag
           newSpan.innerText = morefollowerdata[i].login;
 
-          // add tags to new a tag
+          // add tags to new anchor tag
           newA.appendChild(newImg);
           newA.appendChild(newSpan);
 
-          // add tags to new div
+          // add anchor tag to new div
           newDiv2.appendChild(newA);
 
-          // add the new div element to results
+          // add the new div tag to results displays in HTML
           results.appendChild(newDiv2);
         }
-
-
 			}
 		});
-	}
-}
+	};
+  // hide the button if these are equal because there are no more followers to display
+  if(pagetracker == Math.ceil(followercount / 30)) {
+    nextSearchBtn.style.display = "none";
+  };
+};
+
+// add event to element with id="github-search"
+searchBtn.addEventListener('click', githubSearch, false);
