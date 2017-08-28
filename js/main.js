@@ -8,13 +8,14 @@ var searchBtn = getEl('github-search');
 var nextSearchBtn = getEl('github-next-search');
 // store current page
 var pagetracker = 1;
+// will store total follower count
 var followercount;
 
 // function to create elements with less typing
 function newEl(el) {
   return document.createElement(el)
 }
-// function to create elements with less typing
+// function to select elements with less typing
 function getEl(el) {
   return document.getElementById(el)
 }
